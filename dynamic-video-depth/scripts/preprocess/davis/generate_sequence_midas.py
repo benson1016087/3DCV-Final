@@ -182,7 +182,8 @@ def datadict_from_pair(key, pair):
 
 if __name__ == "__main__":
     track_names = sorted(glob(join(data_list_root, "*")))
-    track_names = ["train", "dog"]
+    # track_names = ["train", "dog"]
+    track_names = [args.track_id]
     for key in track_names:
         all_frames = sorted(glob(join(data_list_root, key, "*.npz")))
         gaps = [1, 2, 3, 4, 5, 6, 7, 8]

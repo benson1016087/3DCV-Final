@@ -34,4 +34,4 @@ for input_file, reference_file in zip(
 
     result["depth_mvs"] = b["depth"]
 
-    np.savez(args.output_dir / input_file, **result)
+    np.savez(args.output_dir / input_file.stem, **result)

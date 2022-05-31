@@ -22,7 +22,7 @@ gpu="$1"
 shift
 set -e
 cmd="
-python train.py \
+CUDA_VISIBLE_DEVICES="$gpu" python train.py \
     --net scene_flow_motion_field \
     --dataset davis_sequence \
     --track_id dog \
@@ -40,14 +40,14 @@ python train.py \
     --vis_batches_train 5 \
     --vis_at_start \
     --tensorboard \
-    --gpu "$gpu" \
+    --gpu 0 \
     --save_net 1 \
     --workers 4 \
     --one_way \
     --loss_type l1 \
     --l1_mul 0 \
     --acc_mul 1 \
-    --disp_mul 1 \
+    --disp_mul 0.1 \
     --warm_sf 5 \
     --scene_lr_mul 1000 \
     --repeat 1 \

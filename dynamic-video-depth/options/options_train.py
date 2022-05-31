@@ -18,6 +18,7 @@ import torch
 from util.util_print import str_warning
 from datasets import get_dataset
 from models import get_model
+from configs import midas_pretrain_path
 
 
 def add_general_arguments(parser):
@@ -145,6 +146,7 @@ def add_general_arguments(parser):
     parser.add_argument('--test_template', type=str, default=None, help='test command template path')
     
     parser.add_argument('--path_suffix', type=str, default="", help='path suffix')
+    parser.add_argument('--backbone', type=str, default=midas_pretrain_path, help='midas pretrain weight')
 
     return parser, unique_params
 

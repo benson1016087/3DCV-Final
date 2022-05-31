@@ -91,7 +91,9 @@ class Model(VideoBaseModel):
                 resize = [224, 384]
             if 'cube' in self.opt.dataset:
                 resize = [224, 384]
-            self.net_depth = MidasNet(path=midas_pretrain_path, non_negative=True, normalize_input=True, resize=resize)
+            # if 'sintel' in self.opt.dataset:
+            #     resize = [224, 384]
+            self.net_depth = MidasNet(path=opt.backbone, non_negative=True, normalize_input=True, resize=resize)
 
         else:
             self.net_depth = HourglassModel_Embed(noexp=False, use_embedding=opt.use_embedding)

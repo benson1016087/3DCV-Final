@@ -16,6 +16,7 @@ import sys
 import argparse
 from datasets import get_dataset
 from models import get_model
+from configs import midas_pretrain_path
 
 
 def add_general_arguments(parser):
@@ -54,6 +55,7 @@ def add_general_arguments(parser):
                         help='manual seed for randomness')
     
     parser.add_argument('--path_suffix', type=str, default="", help='path suffix')
+    parser.add_argument('--backbone', type=str, default=midas_pretrain_path, help='midas pretrain weight')
 
     return parser
 
