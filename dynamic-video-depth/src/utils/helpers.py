@@ -14,6 +14,7 @@ from utils import frame_range
 
 class dotdict(dict):
     """dot.notation access to dictionary attributes"""
+
     __getattr__ = dict.get
     __setattr__ = dict.__setitem__
     __delattr__ = dict.__delitem__
@@ -47,8 +48,12 @@ def print_subbanner(text):
 
 
 def disable_output_stream_buffering():
-    sys.stdout = io.TextIOWrapper(open(sys.stdout.fileno(), "wb", 0), write_through=True)
-    sys.stderr = io.TextIOWrapper(open(sys.stderr.fileno(), "wb", 0), write_through=True)
+    sys.stdout = io.TextIOWrapper(
+        open(sys.stdout.fileno(), "wb", 0), write_through=True
+    )
+    sys.stderr = io.TextIOWrapper(
+        open(sys.stderr.fileno(), "wb", 0), write_through=True
+    )
 
 
 class SuppressedStdout:
@@ -64,9 +69,10 @@ class SuppressedStdout:
 class Nestedspace(argparse.Namespace):
     """This is a namespace that can be used with argparse, where names
     containing a '.' are put a sub-namespaces."""
+
     def __setattr__(self, name, value):
-        if '.' in name:
-            group, name = name.split('.', 1)
+        if "." in name:
+            group, name = name.split(".", 1)
             ns = getattr(self, group, Nestedspace())
             setattr(ns, name, value)
             self.__dict__[group] = ns
@@ -81,8 +87,10 @@ def autoclean_tempdir(suffix=None, prefix=None, dir=None):
     until program termination. The `prefix`, `suffix`, and `dir` arguments
     are the same as for `tempfile.mkdtemp()` and passed to it verbatim.
     """
+
     def cleanup(dirname):
         shutil.rmtree(dirname, ignore_errors=True)
+
     dirname = tempfile.mkdtemp(suffix, prefix, dir)
     atexit.register(cleanup, dirname)
     return dirname
@@ -98,7 +106,7 @@ def str2bool(v):
       script --param <bool>
     """
     if isinstance(v, bool):
-       return v
+        return v
     if v.lower() in ("yes", "true", "t", "y", "1"):
         return True
     elif v.lower() in ("no", "false", "f", "n", "0"):

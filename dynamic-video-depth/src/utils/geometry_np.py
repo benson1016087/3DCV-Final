@@ -61,8 +61,10 @@ def sample(depth: np.ndarray, pixels: np.ndarray) -> Tuple[np.ndarray, np.ndarra
     H, W = depth.shape
     ix = np.all(
         (
-            0 <= pixels_nn[0], pixels_nn[0] <= W - 1,
-            0 <= pixels_nn[1], pixels_nn[1] <= H - 1,
+            0 <= pixels_nn[0],
+            pixels_nn[0] <= W - 1,
+            0 <= pixels_nn[1],
+            pixels_nn[1] <= H - 1,
         ),
         axis=0,
     )

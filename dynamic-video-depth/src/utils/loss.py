@@ -3,6 +3,7 @@
 
 import torch
 
+
 def select_tensors(x):
     """
     x (B, N, C, H, W) -> (N, B, C, H, W)
@@ -13,13 +14,13 @@ def select_tensors(x):
 
 def weighted_mse_loss(input, target, weights, dim=1, eps=1e-6):
     """
-        Args:
-            input (B, C, H, W)
-            target (B, C, H, W)
-            weights (B, 1, H, W)
+    Args:
+        input (B, C, H, W)
+        target (B, C, H, W)
+        weights (B, 1, H, W)
 
-        Returns:
-            scalar
+    Returns:
+        scalar
     """
     assert (
         input.ndimension() == target.ndimension()
@@ -37,13 +38,13 @@ def weighted_mse_loss(input, target, weights, dim=1, eps=1e-6):
 
 def weighted_rmse_loss(input, target, weights, dim=1, eps=1e-6):
     """
-        Args:
-            input (B, C, H, W)
-            target (B, C, H, W)
-            weights (B, 1, H, W)
+    Args:
+        input (B, C, H, W)
+        target (B, C, H, W)
+        weights (B, 1, H, W)
 
-        Returns:
-            scalar = weighted_mean(rmse_along_dim)
+    Returns:
+        scalar = weighted_mean(rmse_along_dim)
     """
     assert (
         input.ndimension() == target.ndimension()
@@ -61,12 +62,12 @@ def weighted_rmse_loss(input, target, weights, dim=1, eps=1e-6):
 
 def weighted_mean_loss(x, weights, eps=1e-6):
     """
-        Args:
-            x (B, ...)
-            weights (B, ...)
+    Args:
+        x (B, ...)
+        weights (B, ...)
 
-        Returns:
-            a scalar
+    Returns:
+        a scalar
     """
     assert x.ndimension() == weights.ndimension() and x.shape[0] == weights.shape[0]
     # normalize to sum=1

@@ -54,11 +54,20 @@ def projection_matrix(intr: torch.Tensor) -> torch.Tensor:
     device = intr.device
     o = torch.ones((B,), dtype=dtype, device=device)
     z = torch.zeros((B,), dtype=dtype, device=device)
-    K = torch.stack([
-        -fx,  z, cx,
-          z, fy, cy,
-          z,  z,  o,
-    ], dim=-1).reshape(B, 3, 3)
+    K = torch.stack(
+        [
+            -fx,
+            z,
+            cx,
+            z,
+            fy,
+            cy,
+            z,
+            z,
+            o,
+        ],
+        dim=-1,
+    ).reshape(B, 3, 3)
     return K
 
 
@@ -78,11 +87,7 @@ def cross_prod_matrix(t: torch.Tensor) -> torch.Tensor:
     device = t.device
     z = torch.zeros((B, 1), dtype=dtype, device=device)
 
-    S = torch.cat([
-        z, -tz, ty,
-        tz, z, -tx,
-        -ty, tx, z
-    ], dim=-1).reshape(B, 3, 3)
+    S = torch.cat([z, -tz, ty, tz, z, -tx, -ty, tx, z], dim=-1).reshape(B, 3, 3)
     return S
 
 
@@ -124,7 +129,7 @@ def compute_fundamental_matrix(
 
 def flatten(x: torch.Tensor) -> torch.Tensor:
     """
-        Convert x of shape (B, C, ...) to (B, C, N)
+    Convert x of shape (B, C, ...) to (B, C, N)
     """
     return x.reshape(x.shape[:2] + (-1,))
 
@@ -136,6 +141,7 @@ def essential_constraint(
     Compute essential matrix s.t.,
         r_r^T E r_t =  0
     """
+
     def dot(x, y):
         # x.shape == y.shape = (B, 3, N)
         return torch.sum(x * y, dim=1)
@@ -181,7 +187,7 @@ def fundamental_constraint(
 
 def epipolar_lines(pixel_r: torch.Tensor, F: torch.Tensor) -> torch.Tensor:
     """
-        Compute epipolar lines l = p_r^T * F
+    Compute epipolar lines l = p_r^T * F
     """
     p_r = to_homo(pixel_r)
     shape = p_r.shape
@@ -207,10 +213,10 @@ def closest_point_on_line(
     """
     assert line.shape[1] == 3 and p.shape[1] == 2
     line_f = transpose(flatten(line)).reshape(-1, 3, 1)  # (BxN ,3, 1)
-    p_f = transpose(flatten(p)).reshape(-1, 2, 1)    # (BxN, 2, 1)
+    p_f = transpose(flatten(p)).reshape(-1, 2, 1)  # (BxN, 2, 1)
     a, b, c = line_f[:, :1], line_f[:, 1:2], line_f[:, 2:3]  # (BxN, 1, 1)
     sq_norm = a * a + b * b  # (BxN, 1, 1)
-    sq_norm[sq_norm < eps] = float('nan')
+    sq_norm[sq_norm < eps] = float("nan")
     d = torch.cat([b, -a], dim=1)
     n = line_f[:, :2]
     A = torch.cat((d, n), dim=-1)  # [d, n] (BxN, 2, 2)
@@ -221,9 +227,7 @@ def closest_point_on_line(
     return p_result.reshape(B, H * W, C).transpose(1, 2).reshape(B, C, H, W)
 
 
-def pixel_to_ray(
-    K: torch.Tensor, pixel: torch.Tensor
-) -> torch.Tensor:
+def pixel_to_ray(K: torch.Tensor, pixel: torch.Tensor) -> torch.Tensor:
     K_inv = torch.inverse(K)
     p = flatten(to_homo(pixel))
     ray = torch.bmm(K_inv, p)
@@ -239,7 +243,7 @@ def compute_depth(
     K_r: torch.Tensor,
     K_t: torch.Tensor,
     pose: Pose,
-    eps: float = 1e-3
+    eps: float = 1e-3,
 ) -> torch.Tensor:
     """
     Given pixel_r, pixel_t that agree with epipolar constraint, compute depth z
@@ -259,9 +263,9 @@ def compute_depth(
     lhs = torch.cross(p_t, KRTr, dim=1)
 
     Kt = torch.bmm(K_t, pose.t)  # B, 3, 1
-    rhs = - torch.cross(p_t, Kt.expand_as(p_t))
+    rhs = -torch.cross(p_t, Kt.expand_as(p_t))
 
-    lhs[torch.abs(lhs) < eps] = float('nan')
+    lhs[torch.abs(lhs) < eps] = float("nan")
     z = (rhs / lhs).reshape(ray_r.shape)
     return torch.mean(z, dim=1)
 
@@ -272,7 +276,7 @@ def compute_closest_epipolar_depth(
     pose: Pose,
     K_r: torch.Tensor,
     K_t: torch.Tensor,
-    F: Optional[torch.Tensor] = None
+    F: Optional[torch.Tensor] = None,
 ) -> torch.Tensor:
     """
     Given pixel_r, pixel_t that not necessarily agree with epipolar constraint,
@@ -288,9 +292,12 @@ def compute_closest_epipolar_depth(
 
 
 def epipolar_error_and_depth(
-    pixel_r: torch.Tensor, pixel_t: torch.Tensor,
-    pose_r: Pose, pose_t: Pose,
-    K_r: torch.Tensor, K_t: torch.Tensor,
+    pixel_r: torch.Tensor,
+    pixel_t: torch.Tensor,
+    pose_r: Pose,
+    pose_t: Pose,
+    K_r: torch.Tensor,
+    K_t: torch.Tensor,
 ) -> torch.Tensor:
     """
     Given pixel_r, pixel_t that not necessarily agree with epipolar constraint,
@@ -310,8 +317,10 @@ def epipolar_error_and_depth(
 
 def epipolar_error_and_depth_from_flow(
     flow: torch.Tensor,
-    extr_r: torch.Tensor, extr_t: torch.Tensor,
-    intr_r: torch.Tensor, intr_t: torch.Tensor,
+    extr_r: torch.Tensor,
+    extr_t: torch.Tensor,
+    intr_r: torch.Tensor,
+    intr_t: torch.Tensor,
 ) -> torch.Tensor:
     """
     Given optical flow that not necessarily agree with epipolar constraint,

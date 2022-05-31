@@ -224,7 +224,7 @@ def flow_to_image(flow):
     maxv = max(maxv, np.max(v))
     minv = min(minv, np.min(v))
 
-    rad = np.sqrt(u ** 2 + v ** 2)
+    rad = np.sqrt(u**2 + v**2)
     maxrad = max(-1, np.max(rad))
 
     # print("max flow: %.4f\nflow range:\nu = %.3f .. %.3f\nv = %.3f .. %.3f"
@@ -393,7 +393,7 @@ def compute_color(u, v):
     colorwheel = make_color_wheel()
     ncols = np.size(colorwheel, 0)
 
-    rad = np.sqrt(u ** 2 + v ** 2)
+    rad = np.sqrt(u**2 + v**2)
 
     a = np.arctan2(-v, -u) / np.pi
 

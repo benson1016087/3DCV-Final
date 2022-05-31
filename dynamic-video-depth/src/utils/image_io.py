@@ -23,7 +23,9 @@ warnings.simplefilter("ignore", UserWarning)
 
 
 # resizes the image
-def resize_to_target(image, max_size, align=1, suppress_messages=False, short_side_target=False):
+def resize_to_target(
+    image, max_size, align=1, suppress_messages=False, short_side_target=False
+):
     if not suppress_messages:
         print("Original size: %d x %d" % (image.shape[1], image.shape[0]))
     H, W = image.shape[:2]
@@ -54,16 +56,26 @@ def resize_to_target(image, max_size, align=1, suppress_messages=False, short_si
 
 # Reads an image and returns a normalized float buffer (0-1 range). Corrects
 # rotation based on EXIF tags.
-def load_image(file_name, max_size=None, align=1, suppress_messages=False, short_side_target=False):
+def load_image(
+    file_name, max_size=None, align=1, suppress_messages=False, short_side_target=False
+):
     img, angle = load_image_angle(
-        file_name, max_size, align=align, suppress_messages=suppress_messages, short_side_target=short_side_target,
+        file_name,
+        max_size,
+        align=align,
+        suppress_messages=suppress_messages,
+        short_side_target=short_side_target,
     )
     return img
 
 
 def load_image_angle(
-    file_name, max_size=None, min_size=None,
-    angle=0, align=1, suppress_messages=False,
+    file_name,
+    max_size=None,
+    min_size=None,
+    angle=0,
+    align=1,
+    suppress_messages=False,
     short_side_target=False,
 ):
     with Image.open(file_name) as img:
@@ -88,10 +100,15 @@ def load_image_angle(
         if max_size is not None:
             if min_size is not None:
                 img = cv2.resize(
-                    img, (max_size, min_size), interpolation=cv2.INTER_AREA)
+                    img, (max_size, min_size), interpolation=cv2.INTER_AREA
+                )
             else:
                 img = resize_to_target(
-                    img, max_size, align=align, suppress_messages=suppress_messages, short_side_target=short_side_target
+                    img,
+                    max_size,
+                    align=align,
+                    suppress_messages=suppress_messages,
+                    short_side_target=short_side_target,
                 )
 
         return img, angle
@@ -162,7 +179,7 @@ def save_raw_float32_image(file_name, image):
         f.write(struct.pack("Q", pixel_size))  # Write size_t ~ uint64_t
 
         # Set buffer size to 16 MiB to hide the Python loop overhead.
-        buffersize = max(16 * 1024 ** 2 // image.itemsize, 1)
+        buffersize = max(16 * 1024**2 // image.itemsize, 1)
 
         for chunk in np.nditer(
             float32_image,

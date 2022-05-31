@@ -9,6 +9,7 @@ import numpy as np
 
 from utils.frame_range import FrameRange
 
+
 @unique
 class SamplePairsMode(Enum):
     EXHAUSTED = 0
@@ -53,11 +54,11 @@ class SamplePairs:
         for rel_pair in rel_pairs:
             pair = Pair(
                 frame_range.index_to_frame[rel_pair[0]],
-                frame_range.index_to_frame[rel_pair[1]]
+                frame_range.index_to_frame[rel_pair[1]],
             )
             # Filter out pairs where no end is in depth_frames. Can be optimized
             # when constructing these pairs
-            if (pair[0] in frame_range.frames() or pair[1] in frame_range.frames()):
+            if pair[0] in frame_range.frames() or pair[1] in frame_range.frames():
                 pairs.add(pair)
         return sorted(pairs)
 

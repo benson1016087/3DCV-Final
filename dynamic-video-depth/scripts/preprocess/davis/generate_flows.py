@@ -40,10 +40,12 @@ from skimage.transform import resize as imresize
 def parse():
     parser = argparse.ArgumentParser()
     parser.add_argument("--suffix", help="path suffix", default="")
+    parser.add_argument("--track_id", help="track id", default="dog")
     
     return parser.parse_args()
 
-path_suffix = parse().suffix
+args = parse()
+path_suffix = args.suffix
 data_list_root = "./datafiles/davis_processed/frames_midas" + path_suffix
 outpath = './datafiles/davis_processed/flow_pairs' + path_suffix
 
@@ -169,7 +171,7 @@ def generate_pair_data(key, frame_id_1, frame_id_2, save=True):
 
 track_names = sorted(glob(join(data_list_root, "*")))
 # track_names = ["dog", "train"]
-track_names = ["dog"]
+track_names = [args.track_id]
 track_ids = np.arange(len(track_names))
 
 # %%

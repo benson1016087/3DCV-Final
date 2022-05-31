@@ -101,7 +101,7 @@ def pixels_to_points(intrinsics, depths, pixels):
 
 
 def points_cam_to_world(points_cam, extrinsics):
-    """ Convert the points in camera coordindates to world coordindate
+    """Convert the points in camera coordindates to world coordindate
 
     Args:
         points_cam (B, 3, H, W): points in camera coordinate.
@@ -212,7 +212,7 @@ def calibrate_scale(extrinsics, intrinsics, depths):
 
 
 def warping_field(extrinsics, intrinsics, depths, tgt_ids: List[int]):
-    """ Generate the warping field to warp the other frame the current frame.
+    """Generate the warping field to warp the other frame the current frame.
     Args:
         intrinsics (N, num_params)
         extrinsics (N, 3, 4): each one is [R, t]
@@ -236,7 +236,7 @@ def warping_field(extrinsics, intrinsics, depths, tgt_ids: List[int]):
 
 
 def sample(data, uv):
-    """Sample data (B, C, H, W) by uv (B, 2, H, W) (in pixels). """
+    """Sample data (B, C, H, W) by uv (B, 2, H, W) (in pixels)."""
     H, W = data.shape[2:]
     # grid needs to be in [-1, 1] and (B, H, W, 2)
     # NOTE: divide by (W-1, H-1) instead of (W, H) because uv is in [-1,1]x[-1,1]
@@ -246,7 +246,7 @@ def sample(data, uv):
 
 
 def warp_image(images, depths, extrinsics, intrinsics, tgt_ids: List[int]):
-    """ Warp target images to the reference image based on depths and camera params
+    """Warp target images to the reference image based on depths and camera params
     Warp images[tgt_ids[i]] to images[i].
 
     Args:

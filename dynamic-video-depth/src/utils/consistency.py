@@ -6,7 +6,7 @@ import torch.nn
 
 
 def sample(data, uv):
-    """Sample data (H, W, <C>) by uv (H, W, 2) (in pixels). """
+    """Sample data (H, W, <C>) by uv (H, W, 2) (in pixels)."""
     shape = data.shape
     # data from (H, W, <C>) to (1, C, H, W)
     data = data.reshape(data.shape[:2] + (-1,))
@@ -53,13 +53,13 @@ def consistency_mask(im_ref, im_tgt, flow, threshold, diff_func=sse):
 def consistent_flow_masks(flows, colors, flow_thresh, color_thresh):
     # mask from flow consistency
     masks_flow = [
-        consistency_mask(flow_ref, -flow_tgt, flow_ref, flow_thresh ** 2)
+        consistency_mask(flow_ref, -flow_tgt, flow_ref, flow_thresh**2)
         for flow_ref, flow_tgt in zip(flows, flows[::-1])
     ]
     # mask from photometric consistency
     C = colors[0].shape[-1]
     masks_photo = [
-        consistency_mask(c_ref, c_tgt, flow_ref, C * (color_thresh ** 2))
+        consistency_mask(c_ref, c_tgt, flow_ref, C * (color_thresh**2))
         for c_ref, c_tgt, flow_ref in zip(colors, colors[::-1], flows)
     ]
     # merge the two

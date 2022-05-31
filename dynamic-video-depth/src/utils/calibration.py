@@ -103,7 +103,9 @@ def calibrate_w_sparse_colmap(
     for i, im_id in enumerate(ordered_im_ids):
         if im_id not in map_img_to_pt3D:
             scales[i] = np.nan
-            print('[WARNING] %s does not have visible feature point' % images[im_id].name)
+            print(
+                "[WARNING] %s does not have visible feature point" % images[im_id].name
+            )
         im_name = images[im_id].name
         depth_fn = pjoin(dense_depth_dir, os.path.splitext(im_name)[0] + ".raw")
         inv_depth = tr.load_raw_float32_image(depth_fn)

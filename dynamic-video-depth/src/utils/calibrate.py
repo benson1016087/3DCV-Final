@@ -11,6 +11,7 @@ def resize_small(gt, x, interp=cv2.INTER_NEAREST):
     """
     Resize to match the smaller image.
     """
+
     def size(x):
         return x.shape[:2][::-1]
 
@@ -36,20 +37,13 @@ def calibrate_scale_shift(gt, x):
     os = np.ones_like(x.flatten()).sum()
     xgs = (x * gt).flatten().sum()
     gs = gt.sum()
-    A = np.array([
-        [x2s, xs],
-        [xs, os]
-    ])
-    b = np.array(
-        [xgs, gs]
-    ).T
+    A = np.array([[x2s, xs], [xs, os]])
+    b = np.array([xgs, gs]).T
     s, t = inv(A).dot(b)
     return np.array([s, t])
 
 
-def calibrate_scale_shift_RANSAC(
-    gt, x, max_trials=100000, stop_prob=0.999
-):
+def calibrate_scale_shift_RANSAC(gt, x, max_trials=100000, stop_prob=0.999):
     ix = np.isfinite(gt) & np.isfinite(x)
     gt = gt[ix].reshape(-1, 1)
     x = x[ix].reshape(-1, 1)

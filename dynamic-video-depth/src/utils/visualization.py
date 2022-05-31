@@ -14,14 +14,14 @@ from utils import colormaps
 
 def visualize_scene_flow(scene_flow):
     """Visualize scene flow
-        Args:
-            scene_flow: a list of scene flow data
-            - scene_flow[i]: a numpy array of size (B, 3, H, W)
-            - 0: (ref -> trg); 1: (trg -> ref)
-            - 2: (ref -> ref + 1); 3: (ref -> ref - 1)
-            - 4: (trg -> trg + 1); 5: (trg -> trg - 1)
-        Return:
-            List of scene flow maps (in numpy)
+    Args:
+        scene_flow: a list of scene flow data
+        - scene_flow[i]: a numpy array of size (B, 3, H, W)
+        - 0: (ref -> trg); 1: (trg -> ref)
+        - 2: (ref -> ref + 1); 3: (ref -> ref - 1)
+        - 4: (trg -> trg + 1); 5: (trg -> trg - 1)
+    Return:
+        List of scene flow maps (in numpy)
     """
 
     scene_flow_vis = []
@@ -63,16 +63,21 @@ def visualize_depth(depth, depth_min=None, depth_max=None):
         depth_max = np.nanmax(depth)
 
     depth_scaled = (depth - depth_min) / (depth_max - depth_min)
-    depth_scaled = depth_scaled ** 0.5
+    depth_scaled = depth_scaled**0.5
     depth_scaled_uint8 = np.uint8(depth_scaled * 255)
 
-    return ((cv2.applyColorMap(
-        depth_scaled_uint8, colormaps.cm_magma) / 255) ** 2.2) * 255
+    return (
+        (cv2.applyColorMap(depth_scaled_uint8, colormaps.cm_magma) / 255) ** 2.2
+    ) * 255
 
 
 def visualize_depth_dir(
-    src_dir: str, dst_dir: str, force: bool = False, extension: str = ".raw",
-    min_percentile: float = 0, max_percentile: float = 100,
+    src_dir: str,
+    dst_dir: str,
+    force: bool = False,
+    extension: str = ".raw",
+    min_percentile: float = 0,
+    max_percentile: float = 100,
 ):
     src_files = []
     dst_files = []
@@ -123,8 +128,7 @@ def visualize_depth_dir(
             print(f"skipping existing file '{dst_file}'.")
         else:
             if extension == ".raw":
-                disparity = image_io.load_raw_float32_image(
-                    f"{src_dir}/{src_file}")
+                disparity = image_io.load_raw_float32_image(f"{src_dir}/{src_file}")
             else:
                 disparity = cv2.imread(f"{src_dir}/{src_file}")
 
@@ -140,12 +144,20 @@ def create_video(pattern: str, output_file: str):
         print("ffmpeg not found. Install with 'sudo feature install fbmotion2'")
         sys.exit()
     if not os.path.exists(output_file):
-        cmd = [ffmpeg, "-r", "30",
-            "-i", pattern,
-            "-c:v", "libx264",
-            "-crf", "27",
-            "-pix_fmt", "yuv420p",
-            output_file]
+        cmd = [
+            ffmpeg,
+            "-r",
+            "30",
+            "-i",
+            pattern,
+            "-c:v",
+            "libx264",
+            "-crf",
+            "27",
+            "-pix_fmt",
+            "yuv420p",
+            output_file,
+        ]
         subprocess.call(cmd)
 
 

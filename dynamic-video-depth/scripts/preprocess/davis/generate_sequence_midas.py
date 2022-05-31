@@ -24,10 +24,12 @@ from tqdm import tqdm
 def parse():
     parser = argparse.ArgumentParser()
     parser.add_argument("--suffix", help="path suffix", default="")
+    parser.add_argument("--track_id", help="track id", default="dog")
     
     return parser.parse_args()
 
-path_suffix = parse().suffix
+args = parse()
+path_suffix = args.suffix
 
 data_list_root = "./datafiles/davis_processed/frames_midas" + path_suffix
 

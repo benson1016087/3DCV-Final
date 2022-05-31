@@ -27,13 +27,15 @@ class FrameRange:
     """
     Compute the indices of frames we are interested in from the specified range.
     """
+
     def __init__(
         self,
         frame_range: OptionalSet,
         num_frames: int = None,
     ):
-        full_range = OptionalSet(set=set(range(num_frames))
-            if num_frames is not None else None)
+        full_range = OptionalSet(
+            set=set(range(num_frames)) if num_frames is not None else None
+        )
 
         if frame_range is None:
             self.update(full_range)
@@ -70,10 +72,10 @@ def parse_frame_range(frame_range_str: str) -> NamedOptionalSet:
     if len(frame_range_str) == 0:
         return NamedOptionalSet(name=frame_range_str, set=OptionalSet())
 
-    range_strs = frame_range_str.split(',')
+    range_strs = frame_range_str.split(",")
 
     def parse_sub_range(sub_range_str: str):
-        splits = [int(s) for s in sub_range_str.split('-', maxsplit=1)]
+        splits = [int(s) for s in sub_range_str.split("-", maxsplit=1)]
         if len(splits) == 1:
             return splits
 
@@ -102,7 +104,7 @@ def parse_frame_range(frame_range_str: str) -> NamedOptionalSet:
     for i in it:
         if i < 0:
             raise ValueError("Frame indices must be positive.")
-        assert(i > last_index)
+        assert i > last_index
         if i - last_index > 1:
             add_range(ranges)
             start = i

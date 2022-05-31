@@ -73,13 +73,12 @@ CAMERA_MODELS = {
 CAMERA_MODEL_IDS = dict(
     [(camera_model.model_id, camera_model) for camera_model in CAMERA_MODELS]
 )
-CAMERA_NAME_TO_IDS = {
-    c.model_name: c.model_id for c in CAMERA_MODELS
-}
+CAMERA_NAME_TO_IDS = {c.model_name: c.model_id for c in CAMERA_MODELS}
 
 
-CAMERA_MODEL_NAMES = dict([(camera_model.model_name, camera_model)
-                           for camera_model in CAMERA_MODELS])
+CAMERA_MODEL_NAMES = dict(
+    [(camera_model.model_name, camera_model) for camera_model in CAMERA_MODELS]
+)
 
 
 # maps colmap point xc to normal coordinate frame x
@@ -109,16 +108,14 @@ def intrinsics_to_camera(intrinsics, src_im_size=None, dst_im_size=None, eps=0.0
     cxy *= ratio
 
     if np.abs(fxy[0] - fxy[1]) < eps:
-        model = 'SIMPLE_PINHOLE'
+        model = "SIMPLE_PINHOLE"
         params = np.array((fxy[0], cxy[0], cxy[1]))
     else:
-        model = 'PINHOLE'
+        model = "PINHOLE"
         params = np.array((fxy[0], fxy[1], cxy[0], cxy[1]))
 
     camera = Camera(
-        id=1, model=model,
-        width=dst_im_size[0], height=dst_im_size[1],
-        params=params
+        id=1, model=model, width=dst_im_size[0], height=dst_im_size[1], params=params
     )
     return {camera.id: camera}
 
@@ -132,17 +129,20 @@ def extrinsics_to_images(extrinsics):
 
         frame_id = i + 1
         image = BaseImage(
-            id=frame_id, qvec=rotmat2qvec(Rc), tvec=tc.flatten(),
-            camera_id=1, name="frame_%06d.png" % i,
-            xys=[], point3D_ids=[]
+            id=frame_id,
+            qvec=rotmat2qvec(Rc),
+            tvec=tc.flatten(),
+            camera_id=1,
+            name="frame_%06d.png" % i,
+            xys=[],
+            point3D_ids=[],
         )
         images[image.id] = image
     return images
 
 
 def to_colmap(intrinsics, extrinsics, src_im_size=None, dst_im_size=None):
-    """Convert Extrinsics and intrinsics to an empty COLMAP project with no points.
-    """
+    """Convert Extrinsics and intrinsics to an empty COLMAP project with no points."""
     cameras = intrinsics_to_camera(
         intrinsics, src_im_size=src_im_size, dst_im_size=dst_im_size
     )
@@ -154,8 +154,9 @@ def to_colmap(intrinsics, extrinsics, src_im_size=None, dst_im_size=None):
 def save_colmap(
     path, intrinsics, extrinsics, src_im_size=None, dst_im_size=None, ext=".txt"
 ):
-    cameras, images, points3D = to_colmap(intrinsics, extrinsics,
-        src_im_size=src_im_size, dst_im_size=dst_im_size)
+    cameras, images, points3D = to_colmap(
+        intrinsics, extrinsics, src_im_size=src_im_size, dst_im_size=dst_im_size
+    )
     write_model(cameras, images, points3D, path, ext)
 
 
@@ -167,9 +168,13 @@ def cameras_to_intrinsics(cameras, camera_ids, size_new):
     """
     # params = f, cx, cy
     assert all(
-        (c.model == "SIMPLE_PINHOLE" or c.model == "PINHOLE"
+        (
+            c.model == "SIMPLE_PINHOLE"
+            or c.model == "PINHOLE"
             or c.model == "SIMPLE_RADIAL"
-         for c in cameras.values()))
+            for c in cameras.values()
+        )
+    )
 
     intrinsics = []
     for id in camera_ids:
@@ -326,9 +331,9 @@ def write_cameras_text(cameras, path):
         void Reconstruction::WriteCamerasText(const std::string& path)
         void Reconstruction::ReadCamerasText(const std::string& path)
     """
-    HEADER = '# Camera list with one line of data per camera:\n'
-    '#   CAMERA_ID, MODEL, WIDTH, HEIGHT, PARAMS[]\n'
-    '# Number of cameras: {}\n'.format(len(cameras))
+    HEADER = "# Camera list with one line of data per camera:\n"
+    "#   CAMERA_ID, MODEL, WIDTH, HEIGHT, PARAMS[]\n"
+    "# Number of cameras: {}\n".format(len(cameras))
     with open(path, "w") as fid:
         fid.write(HEADER)
         for _, cam in cameras.items():
@@ -347,10 +352,7 @@ def write_cameras_binary(cameras, path_to_model_file):
         write_next_bytes(fid, len(cameras), "Q")
         for _, cam in cameras.items():
             model_id = CAMERA_MODEL_NAMES[cam.model].model_id
-            camera_properties = [cam.id,
-                                 model_id,
-                                 cam.width,
-                                 cam.height]
+            camera_properties = [cam.id, model_id, cam.width, cam.height]
             write_next_bytes(fid, camera_properties, "iiQQ")
             for p in cam.params:
                 write_next_bytes(fid, float(p), "d")
@@ -449,11 +451,15 @@ def write_images_text(images, path):
     if len(images) == 0:
         mean_observations = 0
     else:
-        mean_observations = sum((len(img.point3D_ids) for _, img in images.items()))/len(images)
-    HEADER = '# Image list with two lines of data per image:\n'
-    '#   IMAGE_ID, QW, QX, QY, QZ, TX, TY, TZ, CAMERA_ID, NAME\n'
-    '#   POINTS2D[] as (X, Y, POINT3D_ID)\n'
-    '# Number of images: {}, mean observations per image: {}\n'.format(len(images), mean_observations)
+        mean_observations = sum(
+            (len(img.point3D_ids) for _, img in images.items())
+        ) / len(images)
+    HEADER = "# Image list with two lines of data per image:\n"
+    "#   IMAGE_ID, QW, QX, QY, QZ, TX, TY, TZ, CAMERA_ID, NAME\n"
+    "#   POINTS2D[] as (X, Y, POINT3D_ID)\n"
+    "# Number of images: {}, mean observations per image: {}\n".format(
+        len(images), mean_observations
+    )
 
     with open(path, "w") as fid:
         fid.write(HEADER)
@@ -568,10 +574,14 @@ def write_points3D_text(points3D, path):
     if len(points3D) == 0:
         mean_track_length = 0
     else:
-        mean_track_length = sum((len(pt.image_ids) for _, pt in points3D.items()))/len(points3D)
-    HEADER = '# 3D point list with one line of data per point:\n'
-    '#   POINT3D_ID, X, Y, Z, R, G, B, ERROR, TRACK[] as (IMAGE_ID, POINT2D_IDX)\n'
-    '# Number of points: {}, mean track length: {}\n'.format(len(points3D), mean_track_length)
+        mean_track_length = sum(
+            (len(pt.image_ids) for _, pt in points3D.items())
+        ) / len(points3D)
+    HEADER = "# 3D point list with one line of data per point:\n"
+    "#   POINT3D_ID, X, Y, Z, R, G, B, ERROR, TRACK[] as (IMAGE_ID, POINT2D_IDX)\n"
+    "# Number of points: {}, mean track length: {}\n".format(
+        len(points3D), mean_track_length
+    )
 
     with open(path, "w") as fid:
         fid.write(HEADER)
@@ -670,8 +680,7 @@ def rotmat2qvec(R):
 
 
 def read_array(path):
-    """Read .bin depth maps
-    """
+    """Read .bin depth maps"""
     with open(path, "rb") as fid:
         width, height, channels = np.genfromtxt(
             fid, delimiter="&", max_rows=1, usecols=(0, 1, 2), dtype=int
