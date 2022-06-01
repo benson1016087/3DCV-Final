@@ -32,6 +32,6 @@ for input_file, reference_file in zip(
     # result["depth_pred"] = b["depth_pred"]
     # result["motion_seg"] = b["motion_seg"]
 
-    result["depth_mvs"] = b["depth"]
+    # result["depth_mvs"] = b["depth"]
 
     np.savez(args.output_dir / input_file.stem, **result)

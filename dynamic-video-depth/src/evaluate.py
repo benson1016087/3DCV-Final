@@ -45,7 +45,11 @@ def get_metrics(preds, gts, valids=None, acc_thresholds=[1.25, 1.25**2, 1.25**3]
         acc = []
         for pred, gt, valid in zip(preds, gts, valids):
             pred, gt = pred[valid], gt[valid]
-            acc.append((np.maximum(gt / (pred + 1e-6), pred / (gt + 1e-6)) < acc_threshold).mean())
+            acc.append(
+                (
+                    np.maximum(gt / (pred + 1e-6), pred / (gt + 1e-6)) < acc_threshold
+                ).mean()
+            )
         res[f"acc-{acc_threshold}"] = np.mean(acc)
 
     return res

@@ -37,13 +37,18 @@ if __name__ == "__main__":
         for key in a.files:
             result[key] = a[key]
 
-        scale_x, scale_y = args.height / a["img"].shape[0], args.width / a["img"].shape[1]
+        scale_x, scale_y = (
+            args.height / a["img"].shape[0],
+            args.width / a["img"].shape[1],
+        )
         size = [args.height, args.width]
 
         result["img"] = resize(a["img"], size)
         result["depth_mvs"] = resize(a["depth_mvs"][..., None], size)
         result["depth_pred"] = resize(a["depth_pred"][..., None], size)
-        result["motion_seg"] = (resize(a["motion_seg"][..., None], size) > 0.5).astype(np.int64)
+        result["motion_seg"] = (resize(a["motion_seg"][..., None], size) > 0.5).astype(
+            np.int64
+        )
         result["intrinsics"][0] *= scale_x
         result["intrinsics"][1] *= scale_y
 
