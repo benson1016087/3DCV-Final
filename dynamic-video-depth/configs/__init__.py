@@ -13,6 +13,6 @@
 # limitations under the License.
 
 depth_pretrain_path = './pretrained_depth_ckpt/best_depth_Ours_Bilinear_inc_3_net_G.pth'
-# midas_pretrain_path = './pretrained_depth_ckpt/midas_cpkt.pt'
-midas_pretrain_path = './robust_CVD/dog_model_googckpt/R0-100_hierarchical2_midas2/StD100.0_StR1.0_SmD0_SmR0.0/checkpoints/0005.pth'
+midas_pretrain_path = './pretrained_depth_ckpt/midas_cpkt.pt'
+# midas_pretrain_path = './robust_CVD/dog_model_googckpt/R0-100_hierarchical2_midas2/StD100.0_StR1.0_SmD0_SmR0.0/checkpoints/0005.pth'
 
