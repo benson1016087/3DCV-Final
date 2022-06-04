@@ -41,7 +41,7 @@
 另外，我們可以利用 Mask R-CNN 預測出每個 frame 的 motion segmentation
 <div>
     <div style="text-align: center">
-        <img src="https://i.imgur.com/EjNzcan.png" width=45%>
+        <img src="https://i.imgur.com/EjNzcan.png">
     </div>
 </div>
 
@@ -50,7 +50,7 @@
 有了這些 components 後，便可以根據 baseline model (Consistent Depth of Moving Objects in Video) 的 pipeline 進行 self-supervised training
 <div>
     <div style="text-align: center">
-        <img src="https://i.imgur.com/O78bTm6.png" width=45%>
+        <img src="https://i.imgur.com/O78bTm6.png">
     </div>
 </div>
 
@@ -93,11 +93,11 @@
 ### Visualize Results
 從左至右分別為原始影片、Robust CVD、Baseline Model、我們 proposed 的方法：
 <div style="text-align: center">
-    <div>
+    <div style="text-align: center">
         <img src="https://i.imgur.com/ma8fkFL.gif">
         <p>sintel example</p>
     </div>
-    <div>
+    <div style="text-align: center">
         <img src="https://i.imgur.com/7HZC17P.gif">
         <p>real world example</p>
     </div>
