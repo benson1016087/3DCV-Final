@@ -139,3 +139,24 @@ Davis_data
 *.pt
 *.pth
 RAFT
+
+# Python & complie
+lib/build
+
+# Data
+data
+
+# Model 
+models
+models.zip
+
+# Result 
+output
+
+# Jupyter
+*.ipynb
+.ipynb_checkpoint
+
+# Misc
+__MACOSX
+.vscode
