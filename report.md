@@ -94,12 +94,12 @@
 從左至右分別為原始影片、Robust CVD、Baseline Model、我們 proposed 的方法：
 <div style="text-align: center">
     <div style="text-align: center">
-        <img src="https://i.imgur.com/ma8fkFL.gif">
         <p>sintel example</p>
+        <img src="https://i.imgur.com/ma8fkFL.gif">
     </div>
     <div style="text-align: center">
-        <img src="https://i.imgur.com/7HZC17P.gif">
         <p>real world example</p>
+        <img src="https://i.imgur.com/7HZC17P.gif">
     </div>
 </div>
 
