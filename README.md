@@ -11,19 +11,19 @@ cd MPI-Sintel
 
 # basic data
 wget http://files.is.tue.mpg.de/sintel/MPI-Sintel-complete.zip
-unzip http://files.is.tue.mpg.de/sintel/MPI-Sintel-complete.zip -d MPI-Sintel-complete
+unzip MPI-Sintel-complete.zip -d MPI-Sintel-complete
 
 # depth data
 wget http://files.is.tue.mpg.de/jwulff/sintel/MPI-Sintel-depth-training-20150305.zip
-unzip http://files.is.tue.mpg.de/jwulff/sintel/MPI-Sintel-depth-training-20150305.zip -d MPI-Sintel-depth-training-20150305
+unzip MPI-Sintel-depth-training-20150305.zip -d MPI-Sintel-depth-training-20150305
 
 # stereo data
 wget http://files.is.tue.mpg.de/jwulff/sintel/MPI-Sintel-stereo-training-20150305.zip
-unzip http://files.is.tue.mpg.de/jwulff/sintel/MPI-Sintel-stereo-training-20150305.zip -d MPI-Sintel-stereo-training-20150305
+unzip MPI-Sintel-stereo-training-20150305.zip -d MPI-Sintel-stereo-training-20150305
 
 # segmentation data
 wget http://files.is.tue.mpg.de/jwulff/sintel/MPI-Sintel-segmentation-training-20150219.zip
-wget http://files.is.tue.mpg.de/jwulff/sintel/MPI-Sintel-segmentation-training-20150219.zip -d MPI-Sintel-segmentation-training-20150219
+unzip MPI-Sintel-segmentation-training-20150219.zip -d MPI-Sintel-segmentation-training-20150219
 
 # generate video data
 python convert_video.py MPI-Sintel-complete/ MPI-Sintel-video
